@@ -8,17 +8,18 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class MyWorld extends World
 {
-    public static double scale = 30;
+    public static double scale = 50;
     public static int pos = 100;
     
-    double dx = 5.0 * scale;
-    double dy = -5.0 * scale;
     double x = 0.0;
     double y = 360.0;
     double w = 30.0;
-    double l = 360.0;   
-    double angle = 45.0;
-    double vi = 10.0 * scale;
+    double l = 360.0; 
+    
+    double dx = 2.456046 * scale;
+    double dy = 1.707674 * scale;
+    double angle = 29.953608;
+    double vi = 7.462868607 * scale;
     
     
     
@@ -30,14 +31,11 @@ public class MyWorld extends World
         Platform b2 = new Platform((int) (getWidth()-w-dx), (int) (getHeight()-l-dy));
         addObject(b1, (int) (x+(w/2.0)), (int) (y+(l/2.0)));
         addObject(b2, (int) (x+dx+w+((getWidth()-w-dx)/2.0)), (int) (getHeight()-dy-l+((getHeight()-l-dy)/2.0)));
-        for(int i = 0; i <= 90; i++){
-            addObject(new Projectile(dy, vi, i, w, l), (int) w, (int) l);
-        }
     }
 
     public void act(){
         if(Greenfoot.isKeyDown("space")){
-            if(getObjects(Projectile.class).size() == -1){
+            if(getObjects(Projectile.class).size() == 0){
                 addObject(new Projectile(dy, vi, angle, w, l), (int) w, (int) l);
             } 
         }

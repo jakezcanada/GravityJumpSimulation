@@ -8,22 +8,35 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Projectile extends Actor
 {
-    double ay = 9.81 * MyWorld.scale;
+    double ay = 0.0 - (9.81 * MyWorld.scale);
     double dt = 0.0;
     double dy;
     double vx, vy;
     double startX,startY;
     double cooldown = 200;
     double angle;
+    double cx, cy;
 
     public Projectile(double dy, double vi, double angle, double startX, double startY){
         this.dy = dy;
         this.angle = angle;
         double inRad = angle * Math.PI / 180.0;
         this.vx = vi*Math.cos(inRad);
-        this.vy = 0.0 - vi*Math.sin(inRad);
+        this.vy = vi*Math.sin(inRad);
         this.startX = startX;
         this.startY = startY;
+
+        GreenfootImage img = new GreenfootImage("proj.png");
+        //img.scale(10,10);
+        setImage(img);
+    }
+
+    public void move(){
+        cx = (dt/1000.0) * vx;
+        cy = (dt/1000.0) * vy + (0.5 * ay * (dt/1000.0) * (dt/1000.0));
+        dt += 1;
+        //getWorld().showText((dt/1000.0) + "", 300, 50);
+        setLocation((int) (startX + cx), (int) (startY - cy));
     }
 
     public void act(){
@@ -34,22 +47,16 @@ public class Projectile extends Actor
                     MyWorld.pos += 50;
                 }
                 getWorld().removeObject(this);
+                return;
             }else{
-                double cx, cy;
-                cx = (dt/1000.0) * vx;
-                cy = (dt/1000.0) * vy + (0.5 * ay * (dt/1000.0) * (dt/1000.0));
-                dt += 1;
-                //getWorld().showText((dt/1000.0) + "", 300, 50);
-                setLocation((int) (startX + cx), (int) (startY + cy));
+                move();
             }
         }else{
             cooldown--;
-            double cx, cy;
-            cx = (dt/1000.0) * vx;
-            cy = (dt/1000.0) * vy + (0.5 * ay * (dt/1000.0) * (dt/1000.0));
-            dt += 1;
-            //getWorld().showText((dt/1000.0) + "", 300, 50);
-            setLocation((int) (startX + cx), (int) (startY + cy));
+            move();
+        }
+        if(this.getY() > 720){
+            getWorld().removeObject(this);
         }
     }
 }
