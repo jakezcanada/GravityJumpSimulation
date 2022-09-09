@@ -26,24 +26,28 @@ public class Projectile extends Actor
         this.startX = startX;
         this.startY = startY;
 
+        
+        
         GreenfootImage img = new GreenfootImage("proj.png");
-        //img.scale(10,10);
+        img.scale(10,10);
         setImage(img);
     }
 
     public void move(){
         cx = (dt/1000.0) * vx;
         cy = (dt/1000.0) * vy + (0.5 * ay * (dt/1000.0) * (dt/1000.0));
-        dt += 1;
-        //getWorld().showText((dt/1000.0) + "", 300, 50);
-        setLocation((int) (startX + cx), (int) (startY - cy));
+        dt += 5;
+        setLocation((int) (startX + cx - 5.0), (int) (startY - cy - 5.0));
     }
 
     public void act(){
         if(cooldown <= 0){
             if(isTouching(Platform.class)){
                 if(MyWorld.pos < 500){
-                    getWorld().showText(angle + "degrees takes " + (dt/1000.0) + "seconds", 640, MyWorld.pos);
+                    double time = (-vy-Math.sqrt((vy*vy)-4*(0.5*ay)*(-MyWorld.dy)))/(ay);
+                    MyWorld.distances.add(time * vx);
+                    System.out.println(angle + "degrees takes " + time + "seconds");
+                    getWorld().showText(angle + "degrees takes " + time + "seconds", 640, MyWorld.pos);
                     MyWorld.pos += 50;
                 }
                 getWorld().removeObject(this);
